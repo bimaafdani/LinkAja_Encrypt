@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 	"crypto/md5"
 	"crypto/rand"
+	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"io"
@@ -24,8 +25,8 @@ func Encrypt(data []byte, passphrase string) []byte {
 	nonce := make([]byte, gcm.NonceSize())
 	io.ReadFull(rand.Reader, nonce)
 	ciphertext := gcm.Seal(nonce, nonce, data, nil)
-	//res := []byte(base64.StdEncoding.EncodeToString(append(LinkAja), ciphertext...))
-	return ciphertext
+	res := []byte(base64.StdEncoding.EncodeToString(append([]byte("LinkAja_"), ciphertext...)))
+	return res
 }
 func Request(req string) string {
 	res := "Request"
